@@ -137,7 +137,7 @@ Anyway, we can use this knowledge to drill through the Nokogiri object and selec
 
 ### Using the .css method.
 
-Now's the time for the oh-wow-mind-blown part of this. If we want to programmatically get the Luke's Lobster name using our css selector and Nokogiri. We do this by calling the css method with our css selector as the argument:
+Now's the time for the oh-wow-mind-blown part of this. We want to programmatically get the Luke's Lobster name using our css selector and Nokogiri. We do this by calling the css method with our css selector as the argument:
 
 ```
 fidi_html.css("div.restaurant.r4")
@@ -173,245 +173,17 @@ KABOOM! Now you can save this to a variable to be used by your app/program/site:
 restaurant_name = fidi_html.css("div.restaurant.r4").text
 ```
 
-## Actually Scraping Kickstarter
+## Nokogiri Scraping Part 1
 
-Visit the following link in your browser: `https://www.kickstarter.com/discover/places/new-york-ny?ref=city`
+Now it's time for you to scrape a few pieces of the site on your own. Here are your challenges:
 
-Your version of that link may vary, so instead of describing exact data, let's talk about a structure we'd like to programatically get the data on that page into.
+### Easy
 
-The page, without clicking on "More", displays 20 previews of projects in the NYC area. Each card seems to have a title, an image, a mini description, a location, and some funding details. For our purposes, let's say we want to collect the following data in a hash for each project:
+### Medium
 
-```ruby
-:project => {
-  :title => "Title",
-  :image_link => "Image Link",
-  :description => "Description",
-  :location => "Location",
-  :percent_funded => "Percent Funded"
-}
-```
+### Hard
 
-This will probably be in a larger hash called `projects`. Sound good?
 
-### Some Considerations
-
-Since the data on Kickstarter will change from minute to minute, this project contains a file, `fixtures/kickstarter.html` that we'll be using instead of making an Open-URI request. All that file contains is the data we would have gotten back from Open-URI at a specific time. This way, we can all work from the same version of the data.
-
-### Setting Up Our Project
-
-Since we'll be using that `kickstarter.html` file instead of an Open-URI request, we can actually remove the `require 'open-uri'` line from `kickstarter_scraper.rb`. Next, let's set up some variables:
-
-```ruby
-# This just opens a file and reads it into a variable
-html = File.read('fixtures/kickstarter.html')
-
-kickstarter = Nokogiri::HTML(html)
-```
-
-Notice that this is pretty similar to what we did above.
-
-### Selecting the Projects
-
-The first thing we'll want to do is figure out what selector well allow us to grab each project "preview" as a whole. From your terminal, open up `fixtures/kickstarter.html` by typing:
-
-```bash
-open fixtures/kickstarter.html
-```
-
-This should open it in Chrome. Right click somewhere on the "Moby Dick" project and choose "Inspect Element". By moving your mouse up and down in the HTML in the inspector, you can see what each element represents what on the page via some cool highlighting. By moving your mouse around, it quickly becomes clear that each project is contained in:
-
-```html
-<li class="project grid_4">...</li>
-```
-
-This is awesome. Since this Nokogiri object is just a bunch of nested nodes, and we know how to iterate through a nested data structure, we can use the Ruby we already know to iterate through each of these projects and do stuff with them.
-
-Just to check our assumptions, let's add a `require 'pry'` at the top of our file, and add `binding.pry` after the last line. Then type `ruby kickstarter_scraper.rb` into your terminal. This should drop us into pry, so that we can play around.
-
-In pry, type in:
-
-```
-kickstarter.css("li.project.grid_4").first
-```
-
-This will select the first `li` with the `project` and `grid_4` classes just so that we can make sure we've chosen our selector's correctly.
-
-And we have! (If you don't see any output, or see an empty array, make sure you've typed everything exactly as it was typed here.)
-
-Awesome! Let's add a comment to `kickstarter_scraper.rb` that reminds us of that selector:
-
-```ruby
-# projects: kickstarter.css("li.project.grid_4")
-```
-
-### Selecting the Title
-
-Let's hop back into pry and see if we can figure out how to get the title of that project.
-
-In pry, type:
-
-```
-project = _
-```
-
-This will assign that project to a variable, `project` so that we can play around with it.
-
-Looking back in the inspector in Chrome, and clicking around a bit, it seems like the title is in an `h2` with a class of `bbcard_name`, inside a `strong` and then an `a` tag. Let's check that in pry:
-
-```
-project.css("h2.bbcard_name strong a").text
-```
-
-Since Nokogiri gives us a bunch of nested nodes that all respond to the same methods, we can just chain a `css` method right onto this `project`. Neat, huh?
-
-Cool, let's add that selector into a comment in our `kickstarter_scraper.rb`.
-
-```ruby
-# projects: kickstarter.css("li.project.grid_4")
-# title: project.css("h2.bbcard_name strong a").text
-```
-
-### Selecting the Image Link
-
-What's next? Oh yeah, the Image URL. This one should be easy. Back in Chrome, we can see in the inspector that there is a `div` with a class of `project-thumbnail`. Seems like a good place to look, no?
-
-In pry, type:
-
-```
-project.css("div.project-thumbnail a img").attribute("src").value
-```
-
-Boom! Isn't it awesome how we can just chain a bunch of stuff that we used earlier to drill down as far as we want?
-
-Now, let's keep track of that in our project file:
-
-```ruby
-# projects: kickstarter.css("li.project.grid_4")
-# title: project.css("h2.bbcard_name strong a").text
-# image link: project.css("div.project-thumbnail a img").attribute("src").value
-```
-
-### Selecting the Description
-
-Are you starting to see a pattern here? We click around a bit in the Chrome web inspector, take a stab at a CSS selector in pry, and then keep track of that selector in our project file. Let's grab the description now. In pry:
-
-```
-project.css("p.bbcard_blurb").text
-```
-
-Is that what you got?
-
-Let's add that to `kickstarter_scraper.rb`:
-
-```ruby
-# projects: kickstarter.css("li.project.grid_4")
-# title: project.css("h2.bbcard_name strong a").text
-# image link: project.css("div.project-thumbnail a img").attribute("src").value
-# description: project.css("p.bbcard_blurb").text
-```
-
-### Selecting the Location
-
-Do you think you can figure this one out on your own? Play around in pry, and then come back here when your done. (I'll add this as a comment in the next section just in case you can't figure it out right away.)
-
-### Selecting the Percent Funded
-
-And last, but not least, let's try and grab the percent funded as well! Looking in Chrome, it seems that this one is just a bit trickier, but only because it's a bit more nested than the other ones. In pry, type:
-
-```
-project.css("ul.project-stats li.first.funded strong").text
-```
-
-That does it! To make it useful for later on if, say, we wanted to do some math, let's also tag on a `.gsub("%", "").to_i` to remove the percent sign and convert it into an integer.
-
-Our final list of comments in our `kickstarter_scraper.rb` file, then (including the location from above), is:
-
-```ruby
-# projects: kickstarter.css("li.project.grid_4")
-# title: project.css("h2.bbcard_name strong a").text
-# image link: project.css("div.project-thumbnail a img").attribute("src").value
-# description: project.css("p.bbcard_blurb").text
-# location: project.css("ul.project-meta span.location-name").text
-# percent_funded: project.css("ul.project-stats li.first.funded strong").text.gsub("%","").to_i
-```
-
-### Let's Scrape!
-
-Now, it's just a matter of putting together the data we can grab with Nokogiri with our knowledge of data iteration in Ruby.
-
-First, let's set up a loop to iterate through the projects (and also an empty `projects` hash, which we haven't done yet):
-
-```ruby
-# file: kickstarter_scraper.rb
-
-require 'nokogiri'
-require 'pry'
-
-# projects: kickstarter.css("li.project.grid_4")
-# title: project.css("h2.bbcard_name strong a").text
-# image link: project.css("div.project-thumbnail a img").attribute("src").value
-# description: project.css("p.bbcard_blurb").text
-# location: project.css("ul.project-meta span.location-name").text
-# percent_funded: project.css("ul.project-stats li.first.funded strong").text.gsub("%","").to_i
-
-html = File.read('fixtures/kickstarter.html')
-kickstarter = Nokogiri::HTML(html)
-
-projects = {}
-
-# Iterate through the projects
-kickstarter.css("li.project.grid_4").each do |project|
-  projects[project] = {}
-end
-```
-
-Ok, so that won't work, actually. That's going to make some really wacky key which is a huge Nokogiri object. So, let's change our data structure slightly and make it so that each project title is a key, and the value is another hash with each of our other data points as keys. Sound good?
-
-```ruby
-# file: kickstarter_scraper.rb
-
-...
-
-projects = {}
-
-kickstarter.css("li.project.grid_4").each do |project|
-  title = project.css("h2.bbcard_name strong a").text.to_sym
-  projects[title] = {}
-end
-```
-
-That's better. You'll notice that I'm also converting the title into a symbol using the `to_sym` method. It's not required, but it's better on memory.
-
-Finally, it's just a matter of grabbing each of the data points using the selectors we've already figured out, and adding them to each project's hash. So, our complete code will look something like this:
-
-```ruby
-# file: kickstarter_scraper.rb
-
-require 'nokogiri'
-require 'pry'
-
-# projects: kickstarter.css("li.project.grid_4")
-# title: project.css("h2.bbcard_name strong a").text
-# image link: project.css("div.project-thumbnail a img").attribute("src").value
-# description: project.css("p.bbcard_blurb").text
-# location: project.css("ul.project-meta span.location-name").text
-# percent_funded: project.css("ul.project-stats li.first.funded strong").text.gsub("%","").to_i
-
-html = File.read('fixtures/kickstarter.html')
-kickstarter = Nokogiri::HTML(html)
-
-projects = {}
-
-kickstarter.css("li.project.grid_4").each do |project|
-  title = project.css("h2.bbcard_name strong a").text.to_sym
-  projects[title] = {
-    :image_link => project.css("div.project-thumbnail a img").attribute("src").value,
-    :description => project.css("p.bbcard_blurb").text,
-    :location => project.css("ul.project-meta span.location-name").text,
-    :percent_funded => project.css("ul.project-stats li.first.funded strong").text.gsub("%","").to_i
-  }
-end
-```
 ## Resources
 * [Codecademy](http://www.codecademy.com/dashboard) - [Ruby Track: Data Structures](http://www.codecademy.com/courses/ruby-beginner-en-F3loB/0/1)
 * [RailsCasts](http://railscasts.com/) - [#190 Screen Scraping with Nokogiri](http://railscasts.com/episodes/190-screen-scraping-with-nokogiri)

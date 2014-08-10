@@ -11,7 +11,7 @@
 
 In this short tutorial, we'll be learning the basics of using the [Nokogiri](http://nokogiri.org/) gem by scraping a small portion of a website about Financial District dining options (made by a Flatiron HS student!). Here's the site (open it now in a new tab):
 
-[Fidi-Dining](https://s3-us-west-2.amazonaws.com/nokogiri-scrape/index.html)
+<a href="https://s3-us-west-2.amazonaws.com/nokogiri-scrape/index.html" target="_blank">Fidi Dining</a>
 
 First, we'll learn how to make an http request using Ruby's [Open-URI](http://ruby-doc.org/stdlib-2.1.0/libdoc/open-uri/rdoc/OpenURI.html) module. Then, we'll learn how to convert that response into a `Nokogiri::HTML::Document` object, collect the data we're interested in, and store it into a data structure of our choosing.
 

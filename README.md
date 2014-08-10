@@ -9,7 +9,9 @@
 
 ## Intro
 
-In this short tutorial, we'll be learning the basics of using the [Nokogiri](http://nokogiri.org/) gem by scraping a small portion of a website about Financial District dining options (made by a Flatiron HS student!).
+In this short tutorial, we'll be learning the basics of using the [Nokogiri](http://nokogiri.org/) gem by scraping a small portion of a website about Financial District dining options (made by a Flatiron HS student!). Here's the site (open it now in a new tab):
+
+[Fidi-Dining](https://s3-us-west-2.amazonaws.com/nokogiri-scrape/index.html)
 
 First, we'll learn how to make an http request using Ruby's [Open-URI](http://ruby-doc.org/stdlib-2.1.0/libdoc/open-uri/rdoc/OpenURI.html) module. Then, we'll learn how to convert that response into a `Nokogiri::HTML::Document` object, collect the data we're interested in, and store it into a data structure of our choosing.
 
@@ -37,7 +39,7 @@ Open-URI is a module in Ruby that allows us to programatically make http request
 In other words, running:
 
 ```ruby
-fidi_html = open('http://www.________.com')
+fidi_html = open('https://s3-us-west-2.amazonaws.com/nokogiri-scrape/index.html')
 ```
 
 stores the HTML of our site into a variable called fidi_html.
@@ -67,7 +69,7 @@ If it doesn't, check to make sure that your environment is set up properly and t
 Let's start with Open-URI. Create a variable, `html`, and set it equal to the following line of code:
 
 ```ruby
-html = open('http://___________.com')
+html = open('https://s3-us-west-2.amazonaws.com/nokogiri-scrape/index.html')
 ```
 
 You should see some output similar to this:
@@ -88,7 +90,7 @@ fidi_html.read
 You'll get a huge amout of ugly HTML, the top of which will look something like:
 
 ```
-"<!doctype html><html itemscope=\"\" itemtype=\"http://schema.org/WebPage\"><head><meta content=\"Search the world's information, including webpages, images, videos and more. Google has many special features to help you find exactly what you're looking for.\" name=\"description\">...
+"<!DOCTYPE html>\n<html>\n<head>\n\t<meta charset=\"UTF-8\">\n\t<title>Fidi Dining</title>\n\t<meta name=\"author\" content=\"name\">\n\t<link rel=\"stylesheet\" href=\"css/styles.css\" type=\"text/css\">\n\t<link rel=\"stylesheet\" href=\"css/reset.css\" type=\"text/css\">\n\t<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n</head>\n<body>\n\t<div class=\"header\">\n\t\t<h1>Fidi Dining</h1>\n\t</div>\n\t<div class=\"wrapper\">...
 ```
 
 Gross. Can you imagine if we needed to parse through that manually? Just thinking about the regular expressions involved makes my head hurt.
@@ -109,11 +111,12 @@ You should see a bunch of output, the top of which looks something like:
 #<Nokogiri::HTML::Document:0x811468ac name="document" children=[#<Nokogiri::XML::DTD:0x8114635c name="html">, #<Nokogiri::XML::Element:0x811460f0 name="html" attributes=[#<Nokogiri::XML::Attr:0x8114608c name="itemscope">...
 ```
 
-If you don't see that output (and instead something really short), it may be because that temporary file from earlier got deleted. Just run `fidi_html = open('http://_________.com')` again, followed by `nokogiri_doc = Nokogiri::HTML(fidi_html)` and you should be fine.
+If you don't see that output (and instead something really short), it may be because that temporary file from earlier got deleted. Just run 
+`fidi_html = open('https://s3-us-west-2.amazonaws.com/nokogiri-scrape/index.html')` again, followed by `nokogiri_doc = Nokogiri::HTML(fidi_html)` and you should be fine.
 
 This returns to us a giant object that consists of nested "nodes" that we can drill down into using CSS selectors. Let's see if we can do something useful with it.
 
-In your browser, visit `http://______.com`. Let's see if we can use this Nokogiri object to store the text from one of the buttons (say, the search button) into a variable. Not terribly exciting, but useful to demonstrate how Nokogiri gets stuff done.
+In your browser, visit `https://s3-us-west-2.amazonaws.com/nokogiri-scrape/index.html`. Let's see if we can use this Nokogiri object to store the text from one of the buttons (say, the search button) into a variable. Not terribly exciting, but useful to demonstrate how Nokogiri gets stuff done.
 
 Hopefully you're using Chrome. If you are, right click on the 'Fidi Dining' header, and select 'Inspect Element'. You should see something like:
 

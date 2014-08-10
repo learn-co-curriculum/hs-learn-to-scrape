@@ -93,7 +93,7 @@ You'll get a huge amout of ugly HTML, the top of which will look something like:
 
 Gross. Can you imagine if we needed to parse through that manually? Just thinking about the regular expressions involved makes my head hurt.
 
-Nokogiri to the rescue!
+##Nokogiri to the rescue!
 
 Don't worry about this syntax too much now, but the Nokogiri gem gives us this cool method, `Nokogiri::HTML` that takes an HTML string and converts it into this giant NodeSet (aka, a bunch of nested "nodes") that we can easily play around with.
 
@@ -135,7 +135,7 @@ Chrome Web tools actually makes this very easy for you. If you select the node y
 
 Anyway, we can use this knowledge to drill through the Nokogiri object and select just that text.
 
-### Using the .css method.
+## Using the .css method.
 
 Now's the time for the oh-wow-mind-blown part of this. We want to programmatically get the Luke's Lobster name using our css selector and Nokogiri. We do this by calling the css method with our css selector as the argument:
 
@@ -173,7 +173,7 @@ KABOOM! Now you can save this to a variable to be used by your app/program/site:
 restaurant_name = nokogiri_doc.css("div.restaurant.r4").text
 ```
 
-### Navigating through a list
+## Navigating through a list
 If we use 'inspect element' on the Fidi Dining page, we can see that there are a bunch of divs that have the same 'restaurant' class. If we run
 
 ```

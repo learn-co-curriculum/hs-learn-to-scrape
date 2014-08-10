@@ -140,49 +140,94 @@ Anyway, we can use this knowledge to drill through the Nokogiri object and selec
 Now's the time for the oh-wow-mind-blown part of this. We want to programmatically get the Luke's Lobster name using our css selector and Nokogiri. We do this by calling the css method with our css selector as the argument:
 
 ```
-fidi_html.css("div.restaurant.r4")
+nokogiri_doc.css("div.restaurant.r4")
 ```
 
-But, that selector isn't quite specific enough. If you notice, the thing we actually want is within an `h2` tag inside of the `restaurant` div. Just like we would do in a CSS stylesheet, we just add that `h2` on to the end of our selector.
+But, that selector isn't quite specific enough. If you notice, the thing we actually want is within an `<h2>` tag inside of the `restaurant` div. Just like we would do in a CSS stylesheet, we just add that `h2` on to the end of our selector.
 
 ```
-fidi_html.css("div.restaurant.r2")
+nokogiri_doc.css("div.restaurant.r4 h2")
 ```
 
 Hit return and you should get the following:
 
 ```
-[#<Nokogiri::XML::Element:0x811ffdac name="a" attributes=[#<Nokogiri::XML::Attr:0x811ffd34 name="href" value="/">, #<Nokogiri::XML::Attr:0x811ffd20 name="style" value="background-image:url('/static_files/TacoBell/StaticAssets/images/reskin/bnr_lgo_main_02.png');">] children=[#<Nokogiri::XML::Text:0x811ff4d8 "Taco Bell">]>]
+[#<Nokogiri::XML::Element:0x3ff2b902015c name="h2" children=[#<Nokogiri::XML::Text:0x3ff2b90216ec "Luke's Lobster">]>] 
 ```
 
 Now, we're almost there, but this doesn't quite do it yet. If you notice, this is actually a part of the Nokogiri object. To convert it in to text we use the .text method:
 
 ```
-fidi_html.css("div.restaurant.r4").text
+nokogiri_doc.css("div.restaurant.r4").text
 ```
 
 Hit return, and you get:
 
 ```
-Luke's Lobster
+"Luke's Lobster"
 ```
 
 KABOOM! Now you can save this to a variable to be used by your app/program/site:
 
 ```
-restaurant_name = fidi_html.css("div.restaurant.r4").text
+restaurant_name = nokogiri_doc.css("div.restaurant.r4").text
 ```
+
+### Navigating through a list
+If we use 'inspect element' on the Fidi Dining page, we can see that there are a bunch of divs that have the same 'restaurant' class. If we run
+
+```
+nokogiri_doc.css("div.restaurant")
+```
+You'll get a long list bounded by [ and ] and separated by commas. If this looks familiar, it's because it is! You've been given an array! Feel free to navigate this array like you would any other in ruby. We'll give this selection a variable name so we can play with it:
+
+```
+restaurants_list = nokogiri_doc.css("div.restaurant")
+```
+Using this array, run the following lines of code individually and see what you get:
+
+```
+restaurants_list.text
+```
+```
+restaurants_list.children.text
+```
+```
+restaurants_list[1].text
+```
+```
+restaurants_list[1].children[1].text
+```
+```
+restaurants_list[1].children[5].text
+```
+We're basically drilling down to different parts of the HTML using our understanding of arrays and html! The `.children` method gets an array of the child elements from the current selection.
 
 ## Nokogiri Scraping Part 1
 
 Now it's time for you to scrape a few pieces of the site on your own. Here are your challenges:
 
 ### Easy
+* Scrape the title "Fidi Dining"
+* Scrape the name "Open Kitchen"
+* Scrape the telephone number for GoGo Grill.
+* Scrape the review for TGI fridays.
 
 ### Medium
 
-### Hard
+* Scrape the page title (that appears in the browser tab).
+* Scrape the number of stars that Justino's Pizzeria received.
+* Scrape the source link to the photo for Flavors.
 
+### Hard (You'll need to use iteration)
+
+* Scrape and print a string for each restaurant showing their name and star rating.
+* Scrape and print the name and phone numbers of restaurants with three or more stars.
+* Scrape the name and review for each restaurant that has a phone number starting in (212).
+
+## Scraping Part 2: Choose your own site.
+
+Choose your own site to scrape! Give yourself a challenge! (Talk to a teacher if you need some help brainstorming!)
 
 ## Resources
 * [Codecademy](http://www.codecademy.com/dashboard) - [Ruby Track: Data Structures](http://www.codecademy.com/courses/ruby-beginner-en-F3loB/0/1)

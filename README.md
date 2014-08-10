@@ -127,7 +127,7 @@ Let's find the restaurant name for Luke's Lobster by doing the same thing.
 
 Right click on Luke's lobster, and choose 'inspect element.' You can see that the information on Luke's is in a `div` with a class of "restaurant" and another class "r4". If we were to write this in css, we'd say:
 
-```div.restaurant.r4```
+`div.restaurant.r4`
 
 Chrome Web tools actually makes this very easy for you. If you select the node you want and look at the bottom of the web tools window, the css path is given to you:
 

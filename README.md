@@ -21,7 +21,7 @@ This guide assumes basic Ruby knowlege and familiarity with nested data structur
 
 ## Getting Started
 
-The first thing we need to do is set up our project. Normally, we'd want to test drive the development of this program, but for the purposes of this guide, we'll skip that. Let's go ahead and add a file in the root of our project called `fidi_scrape.rb`.
+The first thing we need to do is set up our project. Normally, we'd want to test drive the development of this program, but for the purposes of this guide, we'll skip that. We're going to be coding our solutions in fidi_scraper.rb.
 
 To be able to use either Nokogiri or Open-URI, we're going to need to make sure we require them both at the top of our file. So on the first two lines of `kickstarter_scraper.rb`, add the following:
 
@@ -50,11 +50,11 @@ From the [Nokogiri](http://nokogiri.org/) website:
 
 > Nokogiri (鋸) is an HTML, XML, SAX, and Reader parser. Among Nokogiri’s many features is the ability to search documents via XPath or CSS3 selectors.
 
-Essentially, Nokogiri allows us to treat a huge string of HTML as if it were a bunch of nested nodes. This means that we can access any element on a given page via handy dot-notation. We can do all of this without any ugly regular expressions, all via CSS selectors. It's amazing!
+Essentially, Nokogiri allows us to treat a huge string of HTML as if it were a bunch of nested data structures. This means that we can access any HTML element on a given page via handy dot-notation. We can do all of this without any ugly regular expressions, all via CSS selectors. It's amazing!
 
 ## First Steps
 
-The best way to play around with unfamilar modules and gems is to, well, play around with them! Let's jump into IRB (type `irb` from your command line) and see if we can figure out how they work.
+The best way to play around with unfamilar modules and gems is to play around with them! Let's jump into IRB (type `irb` from your command line) and see if we can figure out how they work.
 
 Once you open IRB, type `require 'open-uri'`, press Return, and then type `require 'nokogiri'` followed by another Return. Just like we did at the top of our `fidi_scraper.rb` file, we need to load both the Open-URI module and the Nokogiri gem into our environment.
 
@@ -99,7 +99,7 @@ Gross. Can you imagine if we needed to parse through that manually? Just thinkin
 
 Don't worry about this syntax too much now, but the Nokogiri gem gives us this cool method, `Nokogiri::HTML` that takes an HTML string and converts it into this giant NodeSet (aka, a bunch of nested "nodes") that we can easily play around with.
 
-Let's use that `html` variable again and pass it to the `Nokogiri::HTML` method and see what happens:
+Let's use that `html` variable again and pass it to the `Nokogiri::HTML` classes and see what happens:
 
 ```
 nokogiri_doc = Nokogiri::HTML(fidi_html)
@@ -114,7 +114,7 @@ You should see a bunch of output, the top of which looks something like:
 If you don't see that output (and instead something really short), it may be because that temporary file from earlier got deleted. Just run 
 `fidi_html = open('https://s3-us-west-2.amazonaws.com/nokogiri-scrape/index.html')` again, followed by `nokogiri_doc = Nokogiri::HTML(fidi_html)` and you should be fine.
 
-This returns to us a giant object that consists of nested "nodes" that we can drill down into using CSS selectors. Let's see if we can do something useful with it.
+This returns to us a giant object that consists of nested "nodes" (nested arrays and hashes) that we can drill down into using CSS selectors. Let's see if we can do something useful with it.
 
 In your browser, visit `https://s3-us-west-2.amazonaws.com/nokogiri-scrape/index.html`. Let's see if we can use this Nokogiri object to store the text from one of the buttons (say, the search button) into a variable. Not terribly exciting, but useful to demonstrate how Nokogiri gets stuff done.
 

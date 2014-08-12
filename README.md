@@ -206,6 +206,10 @@ restaurants_list[1].children[5].text
 ```
 We're basically drilling down to different parts of the HTML using our understanding of arrays and html! The `.children` method gets an array of the child elements from the current selection.
 
+##Video Tutorial
+
+<iframe src="//player.vimeo.com/video/103179135" width="500" height="281" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe> <p><a href="http://vimeo.com/103179135">Scraping Nokogiri Walkthrough</a> from <a href="http://vimeo.com/flatironschool">The Flatiron School</a> on <a href="https://vimeo.com">Vimeo</a>.</p>
+
 ## Nokogiri Scraping Part 1
 
 Now it's time for you to scrape a few pieces of the site on your own. Here are your challenges:

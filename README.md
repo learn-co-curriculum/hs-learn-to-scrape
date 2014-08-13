@@ -23,7 +23,7 @@ This guide assumes basic Ruby knowlege and familiarity with nested data structur
 
 The first thing we need to do is set up our project. Normally, we'd want to test drive the development of this program, but for the purposes of this guide, we'll skip that. We're going to be coding our solutions in fidi_scraper.rb.
 
-To be able to use either Nokogiri or Open-URI, we're going to need to make sure we require them both at the top of our file. So on the first two lines of `kickstarter_scraper.rb`, add the following:
+To be able to use either Nokogiri or Open-URI, we're going to need to make sure we require them both at the top of our file. So on the first two lines of `fidi_scraper.rb`, add the following:
 
 ```ruby
 require 'nokogiri'
@@ -66,10 +66,10 @@ After each of those lines, IRB should respond with:
 
 If it doesn't, check to make sure that your environment is set up properly and that Nokogiri is indeed installed on your system.
 
-Let's start with Open-URI. Create a variable, `html`, and set it equal to the following line of code:
+Let's start with Open-URI. Create a variable, `fidi_html`, and set it equal to the following line of code:
 
 ```ruby
-html = open('https://s3-us-west-2.amazonaws.com/nokogiri-scrape/index.html')
+fidi_html = open('https://s3-us-west-2.amazonaws.com/nokogiri-scrape/index.html')
 ```
 
 You should see some output similar to this:
@@ -102,7 +102,7 @@ Don't worry about this syntax too much now, but the Nokogiri gem gives us this c
 Let's use that `html` variable again and pass it to the `Nokogiri::HTML` classes and see what happens:
 
 ```
-nokogiri_doc = Nokogiri::HTML(fidi_html)
+fidi_nokogiri = Nokogiri::HTML(fidi_html)
 ```
 
 You should see a bunch of output, the top of which looks something like:
@@ -112,7 +112,7 @@ You should see a bunch of output, the top of which looks something like:
 ```
 
 If you don't see that output (and instead something really short), it may be because that temporary file from earlier got deleted. Just run 
-`fidi_html = open('https://s3-us-west-2.amazonaws.com/nokogiri-scrape/index.html')` again, followed by `nokogiri_doc = Nokogiri::HTML(fidi_html)` and you should be fine.
+`fidi_html = open('https://s3-us-west-2.amazonaws.com/nokogiri-scrape/index.html')` again, followed by `fidi_nokogiri = Nokogiri::HTML(fidi_html)` and you should be fine.
 
 This returns to us a giant object that consists of nested "nodes" (nested arrays and hashes) that we can drill down into using CSS selectors. Let's see if we can do something useful with it.
 
@@ -143,13 +143,13 @@ Anyway, we can use this knowledge to drill through the Nokogiri object and selec
 Now's the time for the oh-wow-mind-blown part of this. We want to programmatically get the Luke's Lobster name using our css selector and Nokogiri. We do this by calling the css method with our css selector as the argument:
 
 ```
-nokogiri_doc.css("div.restaurant.r4")
+fidi_nokogiri.css("div.restaurant.r4")
 ```
 
 But, that selector isn't quite specific enough. If you notice, the thing we actually want is within an `<h2>` tag inside of the `restaurant` div. Just like we would do in a CSS stylesheet, we just add that `h2` on to the end of our selector.
 
 ```
-nokogiri_doc.css("div.restaurant.r4 h2")
+fidi_nokogiri.css("div.restaurant.r4 h2")
 ```
 
 Hit return and you should get the following:
@@ -161,7 +161,7 @@ Hit return and you should get the following:
 Now, we're almost there, but this doesn't quite do it yet. If you notice, this is actually a part of the Nokogiri object. To convert it in to text we use the .text method:
 
 ```
-nokogiri_doc.css("div.restaurant.r4").text
+fidi_nokogiri.css("div.restaurant.r4 h2").text
 ```
 
 Hit return, and you get:
@@ -173,19 +173,19 @@ Hit return, and you get:
 KABOOM! Now you can save this to a variable to be used by your app/program/site:
 
 ```
-restaurant_name = nokogiri_doc.css("div.restaurant.r4").text
+lukes_title = fidi_nokogiri.css("div.restaurant.r4 h2").text
 ```
 
 ## Navigating through a list
 If we use 'inspect element' on the Fidi Dining page, we can see that there are a bunch of divs that have the same 'restaurant' class. If we run
 
 ```
-nokogiri_doc.css("div.restaurant")
+fidi_nokogiri.css("div.restaurant")
 ```
 You'll get a long list bounded by [ and ] and separated by commas. If this looks familiar, it's because it is! You've been given an array! Feel free to navigate this array like you would any other in ruby. We'll give this selection a variable name so we can play with it:
 
 ```
-restaurants_list = nokogiri_doc.css("div.restaurant")
+restaurants_list = fidi_nokogiri.css("div.restaurant")
 ```
 Using this array, run the following lines of code individually and see what you get:
 

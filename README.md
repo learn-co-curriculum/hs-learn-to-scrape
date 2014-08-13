@@ -19,6 +19,10 @@ First, we'll learn how to make an http request using Ruby's [Open-URI](http://ru
 
 This guide assumes basic Ruby knowlege and familiarity with nested data structures. If you need a refresher on hashes and arrays, consider reviewing them on the [Codecademy](http://codecademy.com) Ruby track.
 
+##Video Tutorial
+
+<iframe src="//player.vimeo.com/video/103179135" width="500" height="281" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe> <p><a href="http://vimeo.com/103179135">Scraping Nokogiri Walkthrough</a> from <a href="http://vimeo.com/flatironschool">The Flatiron School</a> on <a href="https://vimeo.com">Vimeo</a>.</p>
+
 ## Getting Started
 
 The first thing we need to do is set up our project. Normally, we'd want to test drive the development of this program, but for the purposes of this guide, we'll skip that. We're going to be coding our solutions in fidi_scraper.rb.
@@ -206,9 +210,6 @@ restaurants_list[1].children[5].text
 ```
 We're basically drilling down to different parts of the HTML using our understanding of arrays and html! The `.children` method gets an array of the child elements from the current selection.
 
-##Video Tutorial
-
-<iframe src="//player.vimeo.com/video/103179135" width="500" height="281" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe> <p><a href="http://vimeo.com/103179135">Scraping Nokogiri Walkthrough</a> from <a href="http://vimeo.com/flatironschool">The Flatiron School</a> on <a href="https://vimeo.com">Vimeo</a>.</p>
 
 ## Nokogiri Scraping Part 1
 

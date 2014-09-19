@@ -7,7 +7,7 @@
 
 # Learn to Scrape!
 
-## Introm
+## Intro
 
 Welcome to Web Scraping! We're glad you're here! Web scraping is the amazing process of pulling data from a website to use in your own program. Whether it's pulling stocks from yahoo finance, news headlines from the new york times, items for sale from craigslist, tweets from your favorite celebrity, or hilarious subreddit titles, web scraping has got you covered.
 

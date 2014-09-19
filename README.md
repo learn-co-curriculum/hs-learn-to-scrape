@@ -102,7 +102,7 @@ Right click on Sophie's Cuban Cuisine, and choose 'inspect element.' You can see
 
 Chrome Web tools actually makes this very easy for you. If you select the node you want and look at the bottom of the web tools window, the css path is given to you:
 
-<img src="images/chrome-css-info.png">
+<img src="https://s3-us-west-2.amazonaws.com/nokogiri-scrape/images/chrome-css-info.png">
 
 Anyway, we can use the CSS selector given to us to drill through the Nokogiri object and grab just that text.
 

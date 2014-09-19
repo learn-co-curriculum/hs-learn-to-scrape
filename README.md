@@ -21,7 +21,7 @@ First, we'll learn how to make an http request using Ruby's [Open-URI](http://ru
 
 ## Getting Started
 
-The first thing we need to do is set up our project. Normally, we'd want to test drive the development of this program, but for the purposes of this guide, we'll skip that. We're going to be coding our solutions in fidi_scraper.rb.
+The first thing we need to do is set up our project. Normally, we'd want to test drive the development of this program, but for the purposes of this guide, we'll skip that. We're going to be coding our solutions in a file called fidi_scraper.rb that you can create in your development directory for practice.
 
 To be able to use either Nokogiri or Open-URI, we're going to need to make sure we require them both at the top of our file. So on the first two lines of `fidi_scraper.rb`, add the following:
 

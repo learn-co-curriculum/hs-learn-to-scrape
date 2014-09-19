@@ -9,11 +9,13 @@
 
 ## Intro
 
+Welcome to Web Scraping! We're glad you're here! Web scraping is the amazing process of pulling data from a website to use in your own program. Whether it's pulling stocks from yahoo finance, news headlines from the new york times, items for sale from craigslist, tweets from your favorite celebrity, or hilarious subreddit titles, web scraping has got you covered.
+
 In this short tutorial, we'll be learning the basics of using the [Nokogiri](http://nokogiri.org/) gem by scraping a small portion of a website about Financial District dining options (made by a Flatiron HS student!). Here's the site (open it now in a new tab):
 
 <a href="https://s3-us-west-2.amazonaws.com/nokogiri-scrape/index.html" target="_blank">Fidi Dining</a>
 
-First, we'll learn how to make an http request using Ruby's [Open-URI](http://ruby-doc.org/stdlib-2.1.0/libdoc/open-uri/rdoc/OpenURI.html) module. Then, we'll learn how to convert that response into a `Nokogiri::HTML::Document` object, collect the data we're interested in, and store it into a data structure of our choosing.
+First, we'll learn how to make an http request using Ruby's [Open-URI](http://ruby-doc.org/stdlib-2.1.0/libdoc/open-uri/rdoc/OpenURI.html) module. Then, we'll learn how to convert that response into a `Nokogiri::HTML::Document` object. We'll then use the `.css` method to collect the data we're interested in, and store it into a data structure of our choosing.
 
 ##Video Tutorial
 
@@ -42,7 +44,7 @@ In other words, running:
 fidi_html = open('https://s3-us-west-2.amazonaws.com/nokogiri-scrape/index.html')
 ```
 
-stores the HTML of our site into a variable called fidi_html.
+stores the HTML of our site into a variable called `fidi_html` (You can check this by `puts`-ing the `fidi_html` variable and running the program running `ruby fidi_scraper.rb`) 
 
 ### And Nokogiri? What's that?
 
@@ -62,107 +64,103 @@ Let's use that `html` variable again and pass it to the `Nokogiri::HTML` classes
 fidi_nokogiri = Nokogiri::HTML(fidi_html)
 ```
 
-You should see a bunch of output, the top of which looks something like:
+We can test that a new Nokogiri object was made by putsing fidi_nokogiri. You should see a bunch of output, the top of which looks something like:
 
 ```
 #<Nokogiri::HTML::Document:0x811468ac name="document" children=[#<Nokogiri::XML::DTD:0x8114635c name="html">, #<Nokogiri::XML::Element:0x811460f0 name="html" attributes=[#<Nokogiri::XML::Attr:0x8114608c name="itemscope">...
 ```
 
-If you don't see that output (and instead something really short), it may be because that temporary file from earlier got deleted. Just run 
-`fidi_html = open('https://s3-us-west-2.amazonaws.com/nokogiri-scrape/index.html')` again, followed by `fidi_nokogiri = Nokogiri::HTML(fidi_html)` and you should be fine.
-
 This returns to us a giant object that consists of nested "nodes" (nested arrays and hashes) that we can drill down into using CSS selectors. Let's see if we can do something useful with it.
 
-In your browser, visit `https://s3-us-west-2.amazonaws.com/nokogiri-scrape/index.html`. Let's see if we can use this Nokogiri object to store the text from one of the buttons (say, the search button) into a variable. Not terribly exciting, but useful to demonstrate how Nokogiri gets stuff done.
+In your browser, visit `https://s3-us-west-2.amazonaws.com/nokogiri-scrape/index.html`. Let's see if we can use this Nokogiri object to store the text from the title into a variable. Not terribly exciting, but useful to demonstrate how Nokogiri gets stuff done.
 
-Hopefully you're using Chrome. If you are, right click on the 'Fidi Dining' header, and select 'Inspect Element'. You should see something like:
+Hopefully you're using Chrome. If you are, right click on the 'Fidi Dining' title, and select 'Inspect Element'. You should see something like:
 
 ```html
 <h1>Fidi Dining</h1>
 ```
 
-What this tells us is that the page header is in an `<h1>` element.
+If you don't see it immediately, try clicking on the triangle next to the body tag and then the triangle next to the div with the class "header." What this tells us is that the page header is in an `<h1>` element.
 
-Let's find the restaurant name for Luke's Lobster by doing the same thing.
+We want to pull out this data using Nokogiri. First thing we need to do is create a variable called `title`. We're going to call a method on the fidi_nokogiri object called `.css` that accepts CSS selectors and returns a specific piece of the object based on those selectors.
 
-Right click on Luke's lobster, and choose 'inspect element.' You can see that the information on Luke's is in a `div` with a class of "restaurant" and another class "r4". If we were to write this in css, we'd say:
+```ruby
+title = fidi_nokogiri.css(“h1”)
+```
 
-`div.restaurant.r4`
+If we `puts title`, you'll notice that it returns the html for the title, including the h1 tags. If we only want the text, we can call the .text method.
+
+```ruby
+title = fidi_nokogiri.css(“h1”).text
+```
+
+Great! Now let's find the restaurant name for Sophie's Cuban Cuisine by doing the same thing.
+
+Right click on Sophie's Cuban Cuisine, and choose 'inspect element.' You can see that the information on Sophie's is in a `div` with a class of "restaurant" and another class "r3". If we were to write this in css, we'd say:
+
+`div.restaurant.r3`
 
 Chrome Web tools actually makes this very easy for you. If you select the node you want and look at the bottom of the web tools window, the css path is given to you:
 
 <img src="images/chrome-css-info.png">
 
-Anyway, we can use this knowledge to drill through the Nokogiri object and select just that text.
+Anyway, we can use the CSS selector given to us to drill through the Nokogiri object and grab just that text.
 
 ## Using the .css method.
 
-Now's the time for the oh-wow-mind-blown part of this. We want to programmatically get the Luke's Lobster name using our css selector and Nokogiri. We do this by calling the css method with our css selector as the argument:
+Now's the time for the oh-wow-mind-blown part of this. We want to programmatically get the Sophie's Cuban Cuisine name using our CSS selector and Nokogiri. We do this by calling the CSS method with our CSS selector as the argument:
 
-```
-fidi_nokogiri.css("div.restaurant.r4")
+```ruby
+sophies = fidi_nokogiri.css("div.restaurant.r3")
 ```
 
-But, that selector isn't quite specific enough. If you notice, the thing we actually want is within an `<h2>` tag inside of the `restaurant` div. Just like we would do in a CSS stylesheet, we just add that `h2` on to the end of our selector.
+But, that selector isn't quite specific enough. If you notice, the thing we actually want is within an `<h2>` tag inside of the `restaurant` div. Just like we would do in a CSS stylesheet, we just add that `h2` on to the end of our selector. There is a space between r3 and h2 because the h2 is a child of the r3 div.
 
-```
-fidi_nokogiri.css("div.restaurant.r4 h2")
+```ruby
+sophies = fidi_nokogiri.css("div.restaurant.r3 h2")
 ```
 
 Hit return and you should get the following:
 
 ```
-[#<Nokogiri::XML::Element:0x3ff2b902015c name="h2" children=[#<Nokogiri::XML::Text:0x3ff2b90216ec "Luke's Lobster">]>] 
+[#<Nokogiri::XML::Element:0x3ff2b902015c name="h2" children=[#<Nokogiri::XML::Text:0x3ff2b90216ec "Sophie's Cuban Cuisine">]>] 
 ```
 
-Now, we're almost there, but this doesn't quite do it yet. If you notice, this is actually a part of the Nokogiri object. To convert it in to text we use the .text method:
+Now, we're almost there, but this doesn't quite do it yet. If you notice, this is actually a part of the Nokogiri object. To convert it into text we use the .text method:
 
-```
-fidi_nokogiri.css("div.restaurant.r4 h2").text
+```ruby
+sophies = fidi_nokogiri.css("div.restaurant.r3 h2").text
 ```
 
 Hit return, and you get:
 
 ```
-"Luke's Lobster"
+"Sophie's Cuban Cuisine"
 ```
 
-KABOOM! Now you can save this to a variable to be used by your app/program/site:
-
-```
-lukes_title = fidi_nokogiri.css("div.restaurant.r4 h2").text
-```
+KABOOM! Test this out by adding the line `puts sophies` to your script. Just think about it, you can pull out the phone number by changing the h2 part of the CSS selector to h3 because that's how the phone number is tagged. You can grab any information you want by adjusting the CSS selector.
 
 ## Navigating through a list
 If we use 'inspect element' on the Fidi Dining page, we can see that there are a bunch of divs that have the same 'restaurant' class. If we run
 
-```
+```ruby
 fidi_nokogiri.css("div.restaurant")
 ```
-You'll get a long list bounded by [ and ] and separated by commas. If this looks familiar, it's because it is! You've been given an array! Feel free to navigate this array like you would any other in ruby. We'll give this selection a variable name so we can play with it:
+You'll get a long list bounded by [ and ] and separated by commas. If this looks familiar, it's because it is! You've been given an array! Let's say we want to get the names of ALL the restaurants. We'll create a variable called `restaurants_names` and set it equal to the line above. If we `puts restaurants_names`, we get way too much information. We just want the names. How do we do that? Remember that names are inside the h2 tag, which is a child of each restaurant div. So let's add that h2 to our CSS selector. Let's also call the .text method to just grab the text.
 
+```ruby
+restaurants_names = fidi_nokogiri.css("div.restaurant h2").text
 ```
-restaurants_list = fidi_nokogiri.css("div.restaurant")
-```
-Using this array, run the following lines of code individually and see what you get:
 
-```
-restaurants_list.text
-```
-```
-restaurants_list.children.text
-```
-```
-restaurants_list[1].text
-```
-```
-restaurants_list[1].children[1].text
-```
-```
-restaurants_list[1].children[5].text
-```
-We're basically drilling down to different parts of the HTML using our understanding of arrays and html! The `.children` method gets an array of the child elements from the current selection.
+Great. We're getting the names we want, but they're pretty ugly looking. Why don't we try iterating through the array using the .collect method and converting each name individually to text so that we get a new array of restaurant names back. 
 
+```ruby
+restaurants_names = fidi_nokogiri.css("div.restaurant h2").collect do |name|
+  name.text
+end
+```
+
+That looks better. You're a Nokogiri scraping ninja now!
 
 ## Nokogiri Scraping Part 1
 

@@ -52,49 +52,6 @@ From the [Nokogiri](http://nokogiri.org/) website:
 
 Essentially, Nokogiri allows us to treat a huge string of HTML as if it were a bunch of nested data structures. This means that we can access any HTML element on a given page via handy dot-notation. We can do all of this without any ugly regular expressions, all via CSS selectors. It's amazing!
 
-## First Steps
-
-The best way to play around with unfamilar modules and gems is to play around with them! Let's jump into IRB (type `irb` from your command line) and see if we can figure out how they work.
-
-Once you open IRB, type `require 'open-uri'`, press Return, and then type `require 'nokogiri'` followed by another Return. Just like we did at the top of our `fidi_scraper.rb` file, we need to load both the Open-URI module and the Nokogiri gem into our environment.
-
-After each of those lines, IRB should respond with:
-
-```ruby
-=> true
-```
-
-If it doesn't, check to make sure that your environment is set up properly and that Nokogiri is indeed installed on your system.
-
-Let's start with Open-URI. Create a variable, `fidi_html`, and set it equal to the following line of code:
-
-```ruby
-fidi_html = open('https://s3-us-west-2.amazonaws.com/nokogiri-scrape/index.html')
-```
-
-You should see some output similar to this:
-
-```
-#<File:/var/folders/j8/141_clfx1cz88f86y8ggfd2c0000gn/T/open-uri20140210-1226-9l2b5d>
--rw-------  1 loganhasson  staff  11072 Feb 10 19:38 /var/folders/j8/141_clfx1cz88f86y8ggfd2c0000gn/T/open-uri20140210-1226-9l2b5d
-```
-
-The formatting may be different in your case. But what has happened is that Open-URI has made an http request to the site and stored the response in a temporary file.
-
-To see what that HTML looks like, we can call the `read` method on that file. Since we've stored it in the `fidi_html` variable, we can see the raw HTML like this:
-
-```
-fidi_html.read
-```
-
-You'll get a huge amout of ugly HTML, the top of which will look something like:
-
-```
-"<!DOCTYPE html>\n<html>\n<head>\n\t<meta charset=\"UTF-8\">\n\t<title>Fidi Dining</title>\n\t<meta name=\"author\" content=\"name\">\n\t<link rel=\"stylesheet\" href=\"css/styles.css\" type=\"text/css\">\n\t<link rel=\"stylesheet\" href=\"css/reset.css\" type=\"text/css\">\n\t<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n</head>\n<body>\n\t<div class=\"header\">\n\t\t<h1>Fidi Dining</h1>\n\t</div>\n\t<div class=\"wrapper\">...
-```
-
-Gross. Can you imagine if we needed to parse through that manually? Just thinking about the regular expressions involved makes my head hurt.
-
 ##Nokogiri to the rescue!
 
 Don't worry about this syntax too much now, but the Nokogiri gem gives us this cool method, `Nokogiri::HTML` that takes an HTML string and converts it into this giant NodeSet (aka, a bunch of nested "nodes") that we can easily play around with.

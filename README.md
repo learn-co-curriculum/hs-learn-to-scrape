@@ -19,7 +19,7 @@ First, we'll learn how to make an http request using Ruby's [Open-URI](http://ru
 
 ##Video Tutorial
 
-<iframe src="//player.vimeo.com/video/103179135" width="500" height="281" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe> <p><a href="http://vimeo.com/103179135">Scraping Nokogiri Walkthrough</a> from <a href="http://vimeo.com/flatironschool">The Flatiron School</a> on <a href="https://vimeo.com">Vimeo</a>.</p>
+<iframe src="//player.vimeo.com/video/106618253" width="500" height="375" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
 
 ## Getting Started
 

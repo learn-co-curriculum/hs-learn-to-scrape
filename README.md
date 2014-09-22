@@ -9,7 +9,9 @@
 
 ## Intro
 
-Welcome to Web Scraping! We're glad you're here! Web scraping is the amazing process of pulling data from a website to use in your own program. Whether it's pulling stocks from yahoo finance, news headlines from the new york times, items for sale from craigslist, tweets from your favorite celebrity, or hilarious subreddit titles, web scraping has got you covered.
+Welcome to Web Scraping! We're glad you're here! Web scraping is the amazing process of automatically pulling data from a website, which you can then use in your own program. At the most basic level, the web is just made up of data: Facebook posts, cat pictures, weather forecasts, football scores. Web scraping is exciting because we can take that data that already exists and repurpose it for whatever we want. Whether it's grabbing stocks from Yahoo Finance, news headlines from the New York Times, items for sale on Craigslist, tweets from your favorite celebrity, or hilarious subreddit titles, web scraping has got you covered.
+
+Here's an example. Let's say I have a One Direction fan page, and I want to track the tweets from each individual member of the band. Normally, I'd have to navigate to each member's Twitter page and copy and paste every single tweet he posts. That's five different accounts and a ton of tweets. But a web scraper makes it much faster and easier. I can use a scraper to automatically collect Liam's tweets, and Niall's tweets, and Harry's tweets, etc., then display all the tweets together on my fan site. So essentially, we take this unorganized data spread across multiple Twitter accounts and bring it all together in one place. 
 
 In this short tutorial, we'll be learning the basics of using the [Nokogiri](http://nokogiri.org/) gem by scraping a small portion of a website about Financial District dining options (made by a Flatiron HS student!). Here's the site (open it now in a new tab):
 

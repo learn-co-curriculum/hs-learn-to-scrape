@@ -21,6 +21,8 @@ First, we'll learn how to make an http request using Ruby's [Open-URI](http://ru
 
 ##Video Tutorial
 
+<a href="http://player.vimeo.com/video/106618253">Click here for the video tutorial</a>
+
 <iframe src="//player.vimeo.com/video/106618253" width="500" height="375" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
 
 ## Getting Started

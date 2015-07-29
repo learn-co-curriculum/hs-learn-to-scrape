@@ -1,9 +1,4 @@
----
-  tags: scraping, nokogiri, tutorial, kids
-  languages: ruby, html, css
-  resources: 2
-  level: intermediate
----
+
 
 # Learn to Scrape!
 

@@ -191,4 +191,4 @@ Choose your own site to scrape! Give yourself a challenge! (Talk to a teacher if
 * [Codecademy](http://www.codecademy.com/dashboard) - [Ruby Track: Data Structures](http://www.codecademy.com/courses/ruby-beginner-en-F3loB/0/1)
 * [RailsCasts](http://railscasts.com/) - [#190 Screen Scraping with Nokogiri](http://railscasts.com/episodes/190-screen-scraping-with-nokogiri)
 
-<a href='https://learn.co/lessons/hs-learn-to-scrape' data-visibility='hidden'>View this lesson on Learn.co</a>
+<p data-visibility='hidden'>View <a href='https://learn.co/lessons/hs-learn-to-scrape' title='Learn to Scrape!'>Learn to Scrape!</a> on Learn.co and start learning to code for free.</p>
